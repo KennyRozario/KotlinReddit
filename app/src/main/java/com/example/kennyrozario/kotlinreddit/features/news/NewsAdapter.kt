@@ -1,8 +1,11 @@
-package com.example.kennyrozario.kotlinreddit
+package com.example.kennyrozario.kotlinreddit.features.news
 
 import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.example.kennyrozario.kotlinreddit.LoadingDelegateAdapter
+import com.example.kennyrozario.kotlinreddit.NewsDelegateAdapter
+import com.example.kennyrozario.kotlinreddit.commons.RedditNewsItem
 import com.example.kennyrozario.kotlinreddit.commons.adapter.AdapterConstants
 import com.example.kennyrozario.kotlinreddit.commons.adapter.ViewType
 import com.example.kennyrozario.kotlinreddit.commons.adapter.ViewTypeDelegateAdapter
@@ -25,8 +28,6 @@ class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         items.add(loadingItem)
     }
 
-
-
     override fun getItemCount(): Int {
         return items.size
     }
@@ -42,4 +43,31 @@ class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemViewType(position: Int): Int {
         return this.items.get(position).getViewType()
     }
+
+    fun addNews(news: List<RedditNewsItem>) {
+        val initPosition = items.size - 1
+        items.removeAt(initPosition)
+        notifyItemRemoved(initPosition)
+
+        items.addAll(news)
+        items.add(loadingItem)
+        notifyItemRangeChanged(initPosition, items.size + 1)
+    }
+
+    fun clearAndAddNews(news: List<RedditNewsItem>) {
+        items.clear()
+        notifyItemRangeRemoved(0, getLastPosition())
+
+        items.addAll(items)
+        items.add(loadingItem)
+        notifyItemRangeChanged(0, items.size)
+    }
+
+    fun getNews(): List<RedditNewsItem> {
+        return items
+                .filter { it.getViewType() == AdapterConstants.NEWS }
+                .map { it as RedditNewsItem }
+    }
+
+    private fun getLastPosition() = if (items.lastIndex == -1) 0 else items.lastIndex
 }

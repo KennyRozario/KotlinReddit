@@ -1,10 +1,13 @@
 package com.example.kennyrozario.kotlinreddit.commons.adapter
 
+import android.support.v7.widget.RecyclerView
+import android.view.ViewGroup
+
 /**
  * Created by Kenny on 2017-05-21.
  */
 interface ViewTypeDelegateAdapter {
-    fun onCreateViewHolder(parent: android.view.ViewGroup): android.support.v7.widget.RecyclerView.ViewHolder
+    fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder
 
-    fun onBindViewHolder(holder: android.support.v7.widget.RecyclerView.ViewHolder, item: ViewType)
+    fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType)
 }
